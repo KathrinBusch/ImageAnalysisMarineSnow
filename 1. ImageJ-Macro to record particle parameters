@@ -3,7 +3,7 @@ Purpose: Script to derive particle parameters from brightfield microscopy images
       These parameters include particle supervisory area, perimeter, major (≈length), minor (≈width), angle and feret 
       (i.e. a diameter derived from the distance of two tangents positioned along the particle contour).
 Author: Kathrin Busch (GEOMAR, Department of Marine Biogeochemistry | Microbial Oceanography)
-Date : 2015-12-15
+Date: 2015-12-15
 Language: ImageJ Macro language
 Programm version: Image J 1.48 
 Literature Reference(s): Semi-automatisation of the method described in Engel et al. 2010. Applied in Busch et al. 2017.
