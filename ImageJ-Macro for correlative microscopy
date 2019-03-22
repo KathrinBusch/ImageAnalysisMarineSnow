@@ -1,0 +1,84 @@
+waitForUser("Drag and drop picture of micrometer, taken at 100x magnification, into ImageJ for calibration");
+setTool("line");
+waitForUser("Draw a line with 50µm length"); 
+run("Set Scale...", "distance=[] known=50 pixel=1 unit=µm global");
+close();
+
+waitForUser("Drag and drop Brightfield micrographs into ImageJ")
+run("Images to Stack", "name=Stack.tif title=[] use");
+rename("Brightfield")
+run("Split Channels");
+selectWindow("Brightfield (blue)");
+close();
+selectWindow("Brightfield (green)");
+close();
+selectWindow("Brightfield (red)");
+setAutoThreshold("Default");
+run("Threshold...");   
+waitForUser("Set the threshold for the whole stack and press OK !Important: Remember the threshold value! It will be needed later on");    
+run("Set Measurements...", "area limit redirect=[Brightfield (red)] decimal=3");
+run("Analyze Particles...", "size=0.20-Infinity exclude summarize stack");
+saveAs("Results", "$PWD\\ResultsParticlesALL.txt");
+run("Close");
+run("Clear Results");
+
+waitForUser("Drag and drop DAPI micrographs into ImageJ");
+run("Images to Stack", "name=DAPI_Stack title=[] use");
+rename("DAPI")
+run("Split Channels");
+selectWindow("DAPI (green)");
+close();
+selectWindow("DAPI (red)");
+close();
+selectWindow("DAPI (blue)");
+run("Stack to Images");
+
+### repeat for every single epifluorescent picture individually or run loop:
+  selectWindow("DAPI-0001");
+  run("Set Measurements...", "area center perimeter fit feret's limit add redirect=[DAPI-0001] decimal=3");
+  waitForUser("Set the NoiseTolerance by checking the adjusted value with Preview, choose SinglePoints as output and press OK (for every single micrograph of the stack)");
+  run("Find Maxima...");
+  rename("AllBacteriaFieldofView-01")
+  selectWindow("Brightfield (red)");
+  setSlice(1)
+  run("Create Selection");
+  selectWindow("AllBacteriaFieldofView-01");
+  run("Restore Selection");
+  run("Set Measurements...", "area center perimeter fit feret's limit add redirect=[AllBacteriaFieldofView-01] decimal=3");
+  run("Find Maxima...", "noise=10 output=[Single Points]");
+  rename("ParticleBacteriaFieldofView-01")
+  selectWindow("ParticleBacteriaFieldofView-01");
+  run("Set Measurements...", "area center perimeter fit feret's limit add redirect=[ParticleBacteriaFieldofView-01] decimal=3");
+  run("Find Maxima...", "noise=10 output=Count");
+###
+saveAs("Results", "$PWD\\ResultsBacALL.txt"); 
+selectWindow("Results"); 
+run("Close");
+run("Clear Results");
+
+### repeat for every single brightfield picture individually or run loop:
+  selectWindow("Brightfield (red)");
+  run("Stack to Images");
+  selectWindow("Brightfield-0001");
+  setAutoThreshold("Default");
+  run("Threshold...");   
+  waitForUser("Adjust the threshold to the value chosen earlier for the whole stack and press OK");    
+  run("Set Measurements...", "area center perimeter bounding fit feret's limit redirect=[Brightfield-0001] decimal=3");
+  run("Analyze Particles...", "size=0.2-Infinity display exclude stack");     
+  saveAs("Results", "$PWD\\1ResultsParticles.txt");
+  selectWindow("Results"); 
+  run("Close");
+  selectWindow("ParticleBacteriaFieldofView-01");
+  run("Set Measurements...", "area center perimeter fit feret's limit add redirect=[ParticleBacteriaFieldofView-01] decimal=3");
+  run("Find Maxima...", "noise=10 output=[Point Selection]");
+  run("Measure");
+  saveAs("Results", "$PWD\\1ResultsBac.txt "); 
+  selectWindow("Results"); 
+  run("Close");
+  run("Clear Results");
+###
+while (nImages>0) { 
+          selectImage(nImages); 
+          close(); } 
+          
+waitForUser("Reload Macro to continue with next sample OR start Matlab to process the created data");
