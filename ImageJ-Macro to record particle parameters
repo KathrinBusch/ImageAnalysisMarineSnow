@@ -1,0 +1,32 @@
+waitForUser("Drag and drop picture of micrometer, taken at 20x magnification, into ImageJ"); 
+setTool("line");
+waitForUser("Draw a line with 200µm length"); 
+run("Set Scale...", "distance=[] known=200 pixel=1 unit=µm global");
+close();
+
+for (i = 0; i < 1000; i++)                                                                                  
+{
+waitForUser("Drag and drop pictures you want to stack and analyse into ImageJ"); 
+run("Images to Stack", "name=Stack.tif title=[] use");
+selectWindow("Stack.tif");
+run("Split Channels");
+selectWindow("Stack.tif (blue)");
+close();
+selectWindow("Stack.tif (green)");
+close();
+selectWindow("Stack.tif (red)");
+setAutoThreshold("Default");
+run("Threshold...");   
+waitForUser("Set the threshold manually and press OK");    
+run("Set Measurements...", "area perimeter fit feret's limit redirect=[Stack.tif (red)] decimal=3");
+run("Analyze Particles...", "size=0.2-Infinity display exclude stack");     
+
+selectWindow("Results"); 
+saveAs("Text");
+selectWindow("Results"); 
+run("Close");
+selectWindow("Threshold"); 
+run("Close");
+selectWindow("Stack.tif (red)");
+run("Close");
+}
