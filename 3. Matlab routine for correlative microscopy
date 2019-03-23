@@ -1,3 +1,23 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Purpose: Script to evaluate numbers of particle attached bacteria in relation to particle size by correlative 
+      brightfield and epifluorescent microscopy. Step 2.
+% Author: Kathrin Busch (GEOMAR, Department of Marine Biogeochemistry | Microbial Oceanography)
+% Date : 2016-01-30
+% Language: MATLAB
+% Programm version: MATLAB R2011a 
+% Literature Reference(s): Detailed description in Busch et al. 2017 (esp. Supplementary material S4).
+% Note(s): Usually this script runs without an error message to the end, where I added a 'proof paragraph'. 
+      This proof paragraph accomplishes that, when the routine has finished, values for 'Bacterial Abundance', 
+      'Total Area' and 'Particle Number' appear in the Matlab command window. The two values appearing for each parameter
+      should be the same (accuracy to the first decimal place). If they are not the same, most probably at least one of the
+      manually tuned threshold windows was not set to the same value as the priorly adjusted threshold in ImageJ. 
+      In this case, the ImageJ analysis has to be conducted again for the respective batch. If an error message occurs 
+      instead of the proof paragraph, the problem is most likely that no bacteria were found on the very last analysed 
+      picture. If this is the case, Matlab cannot load the results sheet to create the summary vector. 
+      I suggest to open the incompletely produced Excel result sheet and to manually enter a 0 into the last 'Bac'-column. 
+      Afterwards the Matlab routine should be re-run to replace the incomplete by a complete result sheet.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 R=importdata('ResultsParticlesALL.txt');
 data=R.data(:,[2:5]); 
 headers= R.colheaders(:,[2:5]);  
@@ -11,7 +31,7 @@ col_header={'ParticleNumber','TotalArea','BacterialAbundance','Area1', 'Bac1', '
 xlswrite('MatlabResults',col_header,'1','A1');    
 clear()
 
-%%%%%%%%% Run loop 10 times, with consecutive labelling, if you have 10 images: 
+%%%%%%%%% Run loop 10 times, with consecutive labelling, if you have 10 images per batch: 
 for i=1:1
     try 
         M=importdata('1ResultsParticles.txt');  
