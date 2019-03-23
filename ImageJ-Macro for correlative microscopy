@@ -6,7 +6,7 @@ Date : 2016-01-23
 Language: ImageJ Macro language
 Programm version: Image J 1.48 
 Literature Reference(s): Detailed description in Busch et al. 2017 (esp. Supplementary material S4).
-Notes: A prerequisite that the script works properly is that every brightfield micrograph contains at least one 
+Note(s): A prerequisite that the script works properly is that every brightfield micrograph contains at least one 
       particle which is pictured completely (not clipped off at the pictures edges!). 
       The order in which the micrographs are dragged into ImageJ has to be the same for the brightfield micrographs 
       and the epifluorescent micrographs to ensure that pictures taken at the same filter position are matched 
